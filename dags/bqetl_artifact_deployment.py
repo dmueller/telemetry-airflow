@@ -33,6 +33,7 @@ with DAG("bqetl_artifact_deployment", default_args=default_args, schedule_interv
         docker_image=docker_image
     )
 
+<<<<<<< HEAD
     publish_persistent_udfs = gke_command(
         task_id="publish_persistent_udfs",
         cmds=["bash", "-c"],
@@ -43,15 +44,23 @@ with DAG("bqetl_artifact_deployment", default_args=default_args, schedule_interv
         docker_image=docker_image,
     )
 
+=======
+>>>>>>> d90dc43 (Prevent using cloud function for artifact deployments)
     publish_new_tables = gke_command(
         task_id="publish_new_tables",
         cmds=["bash", "-c"],
         command=[
             "script/bqetl generate all && "
+<<<<<<< HEAD
             "script/bqetl query schema update '*' &&"
             "script/bqetl query schema deploy '*' --skip-existing"
         ],
         docker_image=docker_image,
+=======
+            "script/bqetl query schema update '*' --use-cloud-function=false &&"
+            "script/bqetl query schema deploy '*' --skip-existing --use-cloud-function=false --force --ignore-dryrun-skip"
+        ],
+>>>>>>> d90dc43 (Prevent using cloud function for artifact deployments)
     )
 
     publish_views = gke_command(
@@ -68,5 +77,8 @@ with DAG("bqetl_artifact_deployment", default_args=default_args, schedule_interv
     )
 
     publish_views.set_upstream(publish_public_udfs)
+<<<<<<< HEAD
     publish_views.set_upstream(publish_persistent_udfs)
+=======
+>>>>>>> d90dc43 (Prevent using cloud function for artifact deployments)
     publish_views.set_upstream(publish_new_tables)
