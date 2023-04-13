@@ -69,7 +69,7 @@ wait_for_main_ping = ExternalTaskSensor(
     pool="DATA_ENG_EXTERNALTASKSENSOR",
     email_on_retry=False,
     dag=dag,
-    docker_image="gcr.io/moz-fx-data-airflow-prod-88e0/glam-dev-non-norm-bigquery-etl:latest",
+    docker_image="gcr.io/moz-fx-data-airflow-prod-88e0/glam-dev-bigquery-etl:latest",
 )
 """
 latest_versions = bigquery_etl_query(
@@ -81,7 +81,7 @@ latest_versions = bigquery_etl_query(
     date_partition_parameter=None,
     arguments=("--replace",),
     dag=dag,
-    docker_image="gcr.io/moz-fx-data-airflow-prod-88e0/glam-dev-non-norm-bigquery-etl:latest",
+    docker_image="gcr.io/moz-fx-data-airflow-prod-88e0/glam-dev-bigquery-etl:latest",
 )
 
 update_probe_hotlist = update_hotlist(
@@ -90,7 +90,7 @@ update_probe_hotlist = update_hotlist(
     source_dataset_id=dev_dataset_id,
     destination_dataset_id=dev_dataset_id,
     dag=dag,
-    docker_image="gcr.io/moz-fx-data-airflow-prod-88e0/glam-dev-non-norm-bigquery-etl:latest",
+    docker_image="gcr.io/moz-fx-data-airflow-prod-88e0/glam-dev-bigquery-etl:latest",
 )
 
 # This task runs first and replaces the relevant partition, followed
@@ -104,7 +104,7 @@ clients_daily_scalar_aggregates = generate_and_run_desktop_query(
     overwrite=True,
     probe_type="scalar",
     dag=dag,
-    docker_image="gcr.io/moz-fx-data-airflow-prod-88e0/glam-dev-non-norm-bigquery-etl:latest",
+    docker_image="gcr.io/moz-fx-data-airflow-prod-88e0/glam-dev-bigquery-etl:latest",
 )
 
 clients_daily_keyed_scalar_aggregates = generate_and_run_desktop_query(
@@ -116,7 +116,7 @@ clients_daily_keyed_scalar_aggregates = generate_and_run_desktop_query(
     overwrite=False,
     probe_type="keyed_scalar",
     dag=dag,
-    docker_image="gcr.io/moz-fx-data-airflow-prod-88e0/glam-dev-non-norm-bigquery-etl:latest",
+    docker_image="gcr.io/moz-fx-data-airflow-prod-88e0/glam-dev-bigquery-etl:latest",
 )
 
 clients_daily_keyed_boolean_aggregates = generate_and_run_desktop_query(
@@ -128,7 +128,7 @@ clients_daily_keyed_boolean_aggregates = generate_and_run_desktop_query(
     overwrite=False,
     probe_type="keyed_boolean",
     dag=dag,
-    docker_image="gcr.io/moz-fx-data-airflow-prod-88e0/glam-dev-non-norm-bigquery-etl:latest",
+    docker_image="gcr.io/moz-fx-data-airflow-prod-88e0/glam-dev-bigquery-etl:latest",
 )
 
 clients_scalar_aggregates = bigquery_etl_query(
@@ -140,7 +140,7 @@ clients_scalar_aggregates = bigquery_etl_query(
     depends_on_past=True,
     arguments=("--replace",),
     dag=dag,
-    docker_image="gcr.io/moz-fx-data-airflow-prod-88e0/glam-dev-non-norm-bigquery-etl:latest",
+    docker_image="gcr.io/moz-fx-data-airflow-prod-88e0/glam-dev-bigquery-etl:latest",
 )
 
 scalar_percentiles = gke_command(
@@ -159,7 +159,7 @@ scalar_percentiles = gke_command(
         "--dataset",
         dev_dataset_id,
     ],
-    docker_image="gcr.io/moz-fx-data-airflow-prod-88e0/glam-dev-non-norm-bigquery-etl:latest",
+    docker_image="gcr.io/moz-fx-data-airflow-prod-88e0/glam-dev-bigquery-etl:latest",
     dag=dag,
 )
 
@@ -177,7 +177,7 @@ clients_daily_histogram_aggregates_parent = generate_and_run_desktop_query(
     process="parent",
     get_logs=False,
     dag=dag,
-    docker_image="gcr.io/moz-fx-data-airflow-prod-88e0/glam-dev-non-norm-bigquery-etl:latest",
+    docker_image="gcr.io/moz-fx-data-airflow-prod-88e0/glam-dev-bigquery-etl:latest",
 )
 
 clients_daily_histogram_aggregates_content = generate_and_run_desktop_query(
@@ -191,7 +191,7 @@ clients_daily_histogram_aggregates_content = generate_and_run_desktop_query(
     process="content",
     get_logs=False,
     dag=dag,
-    docker_image="gcr.io/moz-fx-data-airflow-prod-88e0/glam-dev-non-norm-bigquery-etl:latest",
+    docker_image="gcr.io/moz-fx-data-airflow-prod-88e0/glam-dev-bigquery-etl:latest",
 )
 
 clients_daily_histogram_aggregates_gpu = generate_and_run_desktop_query(
@@ -205,7 +205,7 @@ clients_daily_histogram_aggregates_gpu = generate_and_run_desktop_query(
     process="gpu",
     get_logs=False,
     dag=dag,
-    docker_image="gcr.io/moz-fx-data-airflow-prod-88e0/glam-dev-non-norm-bigquery-etl:latest",
+    docker_image="gcr.io/moz-fx-data-airflow-prod-88e0/glam-dev-bigquery-etl:latest",
 )
 
 clients_daily_keyed_histogram_aggregates = generate_and_run_desktop_query(
@@ -218,7 +218,7 @@ clients_daily_keyed_histogram_aggregates = generate_and_run_desktop_query(
     probe_type="keyed_histogram",
     get_logs=False,
     dag=dag,
-    docker_image="gcr.io/moz-fx-data-airflow-prod-88e0/glam-dev-non-norm-bigquery-etl:latest",
+    docker_image="gcr.io/moz-fx-data-airflow-prod-88e0/glam-dev-bigquery-etl:latest",
 )
 
 clients_histogram_aggregates = SubDagOperator(
@@ -229,7 +229,7 @@ clients_histogram_aggregates = SubDagOperator(
         dag.schedule_interval,
         dev_dataset_id,
         is_dev=True,
-        docker_image="gcr.io/moz-fx-data-airflow-prod-88e0/glam-dev-non-norm-bigquery-etl:latest",
+        docker_image="gcr.io/moz-fx-data-airflow-prod-88e0/glam-dev-bigquery-etl:latest",
     ),
     task_id=GLAM_CLIENTS_HISTOGRAM_AGGREGATES_SUBDAG,
     dag=dag,
@@ -244,7 +244,7 @@ histogram_percentiles = bigquery_etl_query(
     date_partition_parameter=None,
     arguments=("--replace", "--clustering_fields=metric,channel"),
     dag=dag,
-    docker_image="gcr.io/moz-fx-data-airflow-prod-88e0/glam-dev-non-norm-bigquery-etl:latest",
+    docker_image="gcr.io/moz-fx-data-airflow-prod-88e0/glam-dev-bigquery-etl:latest",
 )
 
 glam_user_counts = bigquery_etl_query(
@@ -257,7 +257,7 @@ glam_user_counts = bigquery_etl_query(
     parameters=("submission_date:DATE:{{ds}}",),
     arguments=("--replace",),
     dag=dag,
-    docker_image="gcr.io/moz-fx-data-airflow-prod-88e0/glam-dev-non-norm-bigquery-etl:latest",
+    docker_image="gcr.io/moz-fx-data-airflow-prod-88e0/glam-dev-bigquery-etl:latest",
 )
 
 glam_sample_counts = bigquery_etl_query(
@@ -270,7 +270,7 @@ glam_sample_counts = bigquery_etl_query(
     parameters=("submission_date:DATE:{{ds}}",),
     arguments=("--replace",),
     dag=dag,
-    docker_image="gcr.io/moz-fx-data-airflow-prod-88e0/glam-dev-non-norm-bigquery-etl:latest",
+    docker_image="gcr.io/moz-fx-data-airflow-prod-88e0/glam-dev-bigquery-etl:latest",
 )
 client_scalar_probe_counts = gke_command(
     task_id="client_scalar_probe_counts",
@@ -288,7 +288,7 @@ client_scalar_probe_counts = gke_command(
         "--dataset",
         dev_dataset_id,
     ],
-    docker_image="gcr.io/moz-fx-data-airflow-prod-88e0/glam-dev-non-norm-bigquery-etl:latest",
+    docker_image="gcr.io/moz-fx-data-airflow-prod-88e0/glam-dev-bigquery-etl:latest",
     dag=dag,
 )
 
@@ -305,7 +305,7 @@ client_scalar_probe_counts = gke_command(
 #    parameters=("submission_date:DATE:{{ds}}",),
 #    arguments=("--replace",),
 #    dag=dag,
-#    docker_image="gcr.io/moz-fx-data-airflow-prod-88e0/glam-dev-non-norm-bigquery-etl:latest",
+#    docker_image="gcr.io/moz-fx-data-airflow-prod-88e0/glam-dev-bigquery-etl:latest",
 # )
 
 # SubdagOperator uses a SequentialExecutor by default
@@ -324,7 +324,7 @@ clients_histogram_all_combos = SubDagOperator(
         ("submission_date:DATE:{{ds}}",),
         10,
         None,
-        docker_image="gcr.io/moz-fx-data-airflow-prod-88e0/glam-dev-non-norm-bigquery-etl:latest",
+        docker_image="gcr.io/moz-fx-data-airflow-prod-88e0/glam-dev-bigquery-etl:latest",
         parallel=False,
     ),
     task_id="clients_histogram_all_combos",
@@ -341,7 +341,7 @@ clients_histogram_bucket_counts = SubDagOperator(
         ("submission_date:DATE:{{ds}}",),
         10,
         None,
-        docker_image="gcr.io/moz-fx-data-airflow-prod-88e0/glam-dev-non-norm-bigquery-etl:latest",
+        docker_image="gcr.io/moz-fx-data-airflow-prod-88e0/glam-dev-bigquery-etl:latest",
         parallel=False,
     ),
     task_id="clients_histogram_bucket_counts",
@@ -358,7 +358,7 @@ clients_non_norm_histogram_bucket_counts = SubDagOperator(
         ("submission_date:DATE:{{ds}}",),
         10,
         None,
-        docker_image="gcr.io/moz-fx-data-airflow-prod-88e0/glam-dev-non-norm-bigquery-etl:latest",
+        docker_image="gcr.io/moz-fx-data-airflow-prod-88e0/glam-dev-bigquery-etl:latest",
         parallel=False,
     ),
     task_id="clients_non_norm_histogram_bucket_counts",
@@ -374,7 +374,7 @@ clients_histogram_probe_counts = bigquery_etl_query(
     date_partition_parameter=None,
     arguments=("--replace", "--clustering_fields=metric,channel"),
     dag=dag,
-    docker_image="gcr.io/moz-fx-data-airflow-prod-88e0/glam-dev-non-norm-bigquery-etl:latest",
+    docker_image="gcr.io/moz-fx-data-airflow-prod-88e0/glam-dev-bigquery-etl:latest",
 )
 
 """ No dev extracts or imports in this first phase.
