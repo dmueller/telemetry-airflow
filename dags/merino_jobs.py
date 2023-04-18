@@ -2,8 +2,8 @@ import datetime
 from typing import Any, Dict, List, Optional
 
 from airflow import DAG
-from airflow.operators.email import EmailOperator
 from airflow.hooks.base import BaseHook
+from airflow.operators.email import EmailOperator
 from operators.gcp_container_operator import GKEPodOperator
 from utils.tags import Tag
 
