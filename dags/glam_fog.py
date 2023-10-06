@@ -76,7 +76,7 @@ with DAG(
     )
 
     pre_import = EmptyOperator(
-        task_id=f'pre_import',
+        task_id='pre_import',
     )
 
     with TaskGroup('glam_fog_external') as glam_fog_external:
@@ -95,7 +95,7 @@ with DAG(
             task_id=f"daily_{product}",
             product=product,
             destination_project_id=PROJECT,
-            env_vars=dict(STAGE="daily"),
+            env_vars=dict(STAGE="daily", WINDOWS_RELEASE_SAMPLE_SIZE=10),
 
         )
         mapping[product] = query
