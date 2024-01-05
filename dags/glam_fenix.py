@@ -68,7 +68,9 @@ LOGICAL_MAPPING = {
     "org_mozilla_fenix_glam_release": ["org_mozilla_firefox"],
 }
 
+
 tags = [Tag.ImpactTier.tier_1]
+
 
 with DAG(
     "glam_fenix",
@@ -170,6 +172,7 @@ with DAG(
 
         probe_counts = view(task_name=f"{product}__view_probe_counts_v1")
         extract_probe_counts = query(task_name=f"{product}__extract_probe_counts_v1")
+        refresh_live = query(task_name=f"{product}__live_v1")
 
         user_counts = view(task_name=f"{product}__view_user_counts_v1")
         extract_user_counts = query(task_name=f"{product}__extract_user_counts_v1")
@@ -228,7 +231,9 @@ with DAG(
             >> histogram_percentiles
             >> probe_counts
         )
-        probe_counts >> sample_counts >> extract_probe_counts >> export >> pre_import
+        probe_counts >> sample_counts >> extract_probe_counts
+        extract_probe_counts >> export >> pre_import
+        extract_probe_counts >> refresh_live
         (
             clients_scalar_aggregate
             >> user_counts
