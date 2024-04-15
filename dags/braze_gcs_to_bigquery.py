@@ -35,7 +35,7 @@ default_args = {
     "start_date": datetime(2024, 4, 15),
     "email_on_failure": True,
     "email_on_retry": False,
-    "retries": 2,
+    "retries": 1,
     "retry_delay": timedelta(minutes=30),
     "email": ["leli@mozilla.com"],
 }
@@ -59,4 +59,5 @@ with DAG(
         ],
         destination_project_dataset_table=f"{project_id}.{dataset_id}.hard_bounces",
         write_disposition="WRITE_TRUNCATE",
+        source_format="AVRO",
     )
